@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "sales-sync/shared/proto/user;userpb";
+
+enum MarketplaceType {
+  UNKNOWN = 0;
+  AVITO = 1;
+}
+
+message MarketplaceAccount {
+  string id = 1;
+  string user_id = 2;
+  MarketplaceType marketplace_type = 3;
+  string account_id = 4;
+  map<string,string> credentials = 5;
+}
+
+message User {
+  string id = 1;
+  string telegram_id = 2;
+  string name = 3;
+  repeated MarketplaceAccount accounts = 4;
+  string createdAt = 5;
+}
+
+message CreateUserRequest {
+  string telegram_id = 1;
+  string name = 2;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message ConnectMarketplaceRequest {
+  string user_id = 1;
+  MarketplaceAccount account = 2;
+}
+
+message ConnectMarketplaceResponse {
+  bool success = 1;
+}
+
+message GetMarketplaceAccountsRequest {
+  User user = 1;
+}
+
+message GetMarketplaceAccountsResponse {
+  repeated MarketplaceAccount accounts = 1;
+}
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc ConnectMarketplace(ConnectMarketplaceRequest) returns (ConnectMarketplaceResponse);
+  rpc GetMarketplaceAccounts(GetMarketplaceAccountsRequest) returns (GetMarketplaceAccountsResponse);
+}
