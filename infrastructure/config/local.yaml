@@ -1,0 +1,7 @@
+app:
+  name: sales-sync
+  env: local
+  port: 8081
+
+db:
+  url: postgres://sales:sales@postgres:5432/sales_local?sslmode=disable
